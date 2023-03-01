@@ -6,7 +6,7 @@
 	session_start();
 
 	//未ログインだったらlogin画面にリダイレクト
-	if(!isset($_SESSION['loggedin']) && $_SERVER ['SCRIPT_NAME'] != '/login.php'){
+	if(!isset($_SESSION['loggedin']) && $_SERVER ['SCRIPT_NAME'] != '/training_schedule/login.php'){
 		header("location: login.php");
 		exit;
 	}
