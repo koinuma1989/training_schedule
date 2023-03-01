@@ -3,6 +3,7 @@
 
 	if(isset($_POST['token']) && isset($_SESSION['token']) && $_SESSION['token'] == $_POST['token']){
 		if(isset($_POST['name']) && isset($_POST['password']) && isset($_POST['role'])){
+			$mysql_connect = db_connect();
 			$sql = "INSERT INTO users(id, name, pass, role) VALUE(null, :name, :password, :role)";
 	        $stmt = $mysql_connect->prepare($sql);
 	        $stmt->bindValue('name', $_POST['name'], PDO::PARAM_STR);
@@ -17,10 +18,14 @@
 	        	$result_text = 'ユーザー追加に失敗しました。';
 	        }
 		}else{
-			$result_text = '不正な画面遷移です。';
+			unset($_SESSION['token']);
+			header("location: admin.php");
+    		exit;
 		}
 	}else{
-		$result_text = '不正な画面遷移です。';
+		unset($_SESSION['token']);
+		header("location: admin.php");
+		exit;
 	}
 	
 	unset($_SESSION['token']);

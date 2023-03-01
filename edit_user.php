@@ -6,10 +6,11 @@
 	}elseif(!empty($_POST['id'])){ //確認画面から戻るで戻ってきたときはPOST
 		$id = $_POST['id'];
 	}else{
-		echo 'IDが指定されていません';
+		header("location: admin.php");
 		exit;
 	}
 	
+	$mysql_connect = db_connect();
 	$sql = "SELECT id,name FROM users WHERE id = :id";
 	$stmt = $mysql_connect->prepare($sql);
 	$stmt->bindValue('id', $id, PDO::PARAM_INT);
@@ -17,7 +18,7 @@
 	$user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 	if(!$user){
-		echo '指定したIDのユーザーが存在しません';
+		header("location: admin.php");
 		exit;
 	}
 	
@@ -47,9 +48,14 @@
 			<?php } ?>
 			<p>
 			
-            <p><span>パスワード：</span><input type="password" name="password" value=""></p>
-			<?php if(isset($_SESSION['errors']['password'])){ ?>
-				<p><?php echo $_SESSION['errors']['password'];?></p>
+            <p><span>現在のパスワード：</span><input type="password" name="old_password" value=""></p>
+			<?php if(isset($_SESSION['errors']['old_password'])){ ?>
+				<p><?php echo $_SESSION['errors']['old_password'];?></p>
+			<?php } ?>
+			
+			<p><span>変更後パスワード：</span><input type="password" name="new_password" value=""></p>
+			<?php if(isset($_SESSION['errors']['new_password'])){ ?>
+				<p><?php echo $_SESSION['errors']['new_password'];?></p>
 			<?php } ?>
 		
 			<input type="hidden" name="id" value=<?php echo $user['id'] ?>>

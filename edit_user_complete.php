@@ -17,10 +17,14 @@
 	        	$result_text = 'ユーザー情報変更に失敗しました。';
 	        }
 		}else{
-            $result_text = '不正な画面遷移です';
+			unset($_SESSION['token']);
+			header("location: admin.php");
+    		exit;
         }
 	}else{
-		$result_text = '不正な画面遷移です。';
+		unset($_SESSION['token']);
+		header("location: admin.php");
+		exit;
 	}
 	
 	unset($_SESSION['token']);

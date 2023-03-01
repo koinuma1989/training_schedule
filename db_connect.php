@@ -1,13 +1,15 @@
 <?php
-	// DBÚ‘±î•ñ
-	$dsn = 'mysql:dbname=schedule;host=localhost';
-	$user = 'root';
-	$password = '';
+	function db_connect(){
+		// DBÚ‘±î•ñ
+		$dsn = 'mysql:dbname=schedule;host=localhost';
+		$user = 'root';
+		$password = '';
 
-	try{
-		$mysql_connect = new PDO($dsn, $user, $password);
-	}catch (PDOException $e){
-		var_dump($e);
-		exit;
+		try{
+			return new PDO($dsn, $user, $password);
+		}catch (PDOException $e){
+			var_dump($e);
+			exit;
+		}
 	}
 ?>

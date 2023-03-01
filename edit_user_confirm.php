@@ -1,8 +1,8 @@
 <?php
 	require_once "init.php";
 	
-	if(isset($_POST['id']) && isset($_POST['name']) && isset($_POST['password'])){
-		$errors = editUserValidation($_POST['name'], $_POST['password'], $mysql_connect);
+	if(isset($_POST['id']) && isset($_POST['name']) && isset($_POST['old_password']) && isset($_POST['new_password'])){
+		$errors = editUserValidation($_POST['id'], $_POST['name'], $_POST['old_password'], $_POST['new_password']);
 		
 		if(empty($errors)){
 			//通常処理
@@ -17,16 +17,22 @@
 	}
 
 	// 入力値バリデーション
-	function editUserValidation($name, $pass, $mysql_connect){
+	function editUserValidation($id, $name, $old_pass, $new_pass){
 		$errors = [];
 		if(empty($name)) {
 			$errors['name'] .= 'ユーザー名は必須項目です' . PHP_EOL;
-		}elseif(isDuplicateUserName($name, $mysql_connect)){//ユーザー名重複確認
-			$errors['name'] .= '既に登録されているユーザー名です' . PHP_EOL;
+		}else if(isDuplicateUserName($name, $id)){//ユーザー名重複確認
+			$errors['name'] .= $name . '　は既に登録されているユーザー名です' . PHP_EOL;
 		}
 
-		if(empty($pass)){
-			$errors['password']  .= 'パスワードが入力されていません' . PHP_EOL;
+		if(empty($old_pass)){
+			$errors['old_password']  .= '現在のパスワードは必須項目です' . PHP_EOL;
+        }else if(passwordVerify($id, $old_pass)){
+			$errors['old_password']  .= '現在のパスワードが違います' . PHP_EOL;
+        }
+
+		if(empty($new_pass)){
+			$errors['new_password']  .= '変更後パスワードは必須項目です' . PHP_EOL;
         }
 		
 		return $errors;
@@ -49,7 +55,7 @@
             
 			<input type="hidden" name="id" value=<?php echo $_POST['id'] ?>>
 			<input type="hidden" name="name" value=<?php echo $_POST['name'] ?>>
-			<input type="hidden" name="password" value=<?php echo $_POST['password'] ?>>
+			<input type="hidden" name="password" value=<?php echo $_POST['new_password'] ?>>
 			<input type="hidden" name="token" value=<?php echo $_SESSION['token'] ?>>
 			<input type="submit" value="編集実行">
 		</form>

@@ -10,7 +10,7 @@
 		$mysql_connect = new PDO($dsn, $user, $password);
 		
 		// memo登録
-		if(isset($_POST['year']) && isset($_POST['month']) && isset($_POST['day'])){		
+		if(isset($_POST['year']) && isset($_POST['month']) && isset($_POST['day'])){
 			if($_SESSION['token'] != $_POST['token']){
 				return;
 			}

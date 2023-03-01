@@ -14,22 +14,39 @@
 		echo('</pre>');
 	}
 	
-	//���[�U�[���̏d���`�F�b�N�@�d������/�Ȃ�:true/false
-	function isDuplicateUserName($name, $mysql_connect){
-		$sql = "SELECT name FROM users WHERE name = :name";
+	//ユーザー名の重複チェック　重複あり/なし:true/false idがある場合はそのidのnameであれば重複していないこととする
+	function isDuplicateUserName($name, $id = false){
+		$mysql_connect = db_connect();
+		$sql = "SELECT id, name FROM users WHERE name = :name";
         $stmt = $mysql_connect->prepare($sql);
         $stmt->bindValue('name', $name, PDO::PARAM_STR);
         $stmt->execute();
         
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        if($result){
+        
+        if($result && $result['id'] != $id){
+        	return 'true';
+        }
+        return false;
+	}
+	
+	// 引数で指定したpassと、idで引っ張ってきたpassを比較して、合致した/合致しない:true/false
+	function passwordVerify($id, $check_pass){
+		$mysql_connect = db_connect();
+		$sql = "SELECT pass FROM users WHERE id = :id";
+        $stmt = $mysql_connect->prepare($sql);
+        $stmt->bindValue('id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if($result && $result['pass'] == $check_pass){
         	return 'true';
         }
         return false;
 	}
 
-	//���O�A�E�g
+	//ログアウト
 	function logout(){
-		unset($_SESSION["loggedin"]);
+		unset($_SESSION["loggedin_id"]);
 	}
 ?>

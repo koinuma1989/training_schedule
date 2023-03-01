@@ -2,7 +2,7 @@
 	require_once "init.php";
 	
 	if(isset($_POST['name']) && isset($_POST['password']) && isset($_POST['role'])){
-		$errors = addUserValidation($_POST['name'], $_POST['password'], $_POST['role'], $mysql_connect);
+		$errors = addUserValidation($_POST['name'], $_POST['password'], $_POST['role']);
 		
 		if(empty($errors)){
 			//通常処理
@@ -17,11 +17,11 @@
 	}
 
 	// 入力値バリデーション
-	function addUserValidation($name, $pass, $role, $mysql_connect){
+	function addUserValidation($name, $pass, $role){
 		$errors = [];
 		if(empty($name)) {
 			$errors['name'] .= 'ユーザー名は必須項目です' . PHP_EOL;
-		}elseif(isDuplicateUserName($name, $mysql_connect)){//ユーザー名重複確認
+		}elseif(isDuplicateUserName($name)){//ユーザー名重複確認
 			$errors['name'] .= '既に登録されているユーザー名です' . PHP_EOL;
 		}
 
