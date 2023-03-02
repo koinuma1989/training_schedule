@@ -2,7 +2,7 @@
 	//CSRF
 	function checkToken(){
 	    if(empty($_SESSION['token']) || ($_SESSION['token'] != $_POST['token'])){
-	        echo '?g?[?N?????s?????', PHP_EOL;
+	        echo 'トークンが不正です', PHP_EOL;
 	        exit;
 	    }
 	}

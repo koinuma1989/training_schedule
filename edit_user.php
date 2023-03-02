@@ -39,7 +39,7 @@
         <h1>ユーザー情報編集</h1>
         
 		<form action="edit_user_confirm.php" method="post">
-			<p><span>ユーザー名：</span><input type="text" name="name" value=<?php echo $name ?>></p>
+			<p><span>ユーザー名：</span><input type="text" name="name" value=<?php echo htmlspecialchars($name) ?>></p>
 			<?php if(isset($_SESSION['errors']['name'])){ ?>
 				<p><?php echo $_SESSION['errors']['name'];?></p>
 			<?php } ?>

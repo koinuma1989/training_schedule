@@ -1,5 +1,6 @@
 <?php
 	require_once "init.php";
+	
 	if(isset($_GET["logout"]) && $_GET["logout"] == true){
 		logout();
 	}
